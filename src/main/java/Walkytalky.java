@@ -1,5 +1,9 @@
 import java.util.Scanner;
 public class Walkytalky {
+
+    private static String[] tasks = new String[100];
+    private static int count = 0;
+
     public static void printWelcomeMessage() {
         System.out.println("—".repeat(60));
         String logo = "▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖\n" +
@@ -23,10 +27,46 @@ public class Walkytalky {
             System.out.println("—".repeat(60)+"\n"+input+"\n"+"—".repeat(60));
         }
     }
+    public static void addTask(String task){
+        if (count < tasks.length) {
+            tasks[count] = task;
+            count++;
+            System.out.println("—".repeat(60));
+            System.out.println("added: " + task);
+            System.out.println("—".repeat(60));
+        } else {
+            System.out.println("Task list is full! (100 tasks max)");
+        }
+    }
+
+    public static void listTasks() {
+        System.out.println("—".repeat(60));
+        for (int i = 0; i < count; i++) {
+            System.out.println((i + 1) + ". " + tasks[i]);
+        }
+        System.out.println("—".repeat(60));
+    }
+
+    public static void addAndList(Scanner in){
+        while (true){
+            String input = in.nextLine();
+            if (input.equalsIgnoreCase("list")){
+                listTasks();
+            }
+            else if (input.equalsIgnoreCase("bye")){
+                System.out.println("—".repeat(60)+"\nBye. Hope to see you again soon!\n"+"—".repeat(60));
+                return;
+            }
+            else {
+                addTask(input);
+            }
+        }
+
+    }
 
     public static void main(String[] args) {
         printWelcomeMessage();
         Scanner in = new Scanner(System.in);
-        echo(in);
+        addAndList(in);
     }
 }
