@@ -29,12 +29,28 @@ public class Walkytalky {
             System.out.println(HLINE+"\n"+input+"\n"+HLINE);
         }
     }
-    public static void addTask(String task){
+    public static void addTask(String task, String input){
         if (count < tasks.length) {
-            tasks[count] = new Task(task);
-            count++;
             System.out.println(HLINE);
-            System.out.println("added: " + task);
+            if (input.contains("todo")){
+                tasks[count] = new Todo(task);
+            }
+            else if (input.contains("deadline")){
+                String deadline = input.substring(input.indexOf("/by") + 3).trim();
+                String description = input.substring(0,input.indexOf('/') - 1).trim();
+                tasks[count] = new Deadline(description, deadline);
+            }
+            else if (input.contains("event")){
+                int indexOfFrom=input.indexOf("from");
+                int indexOfTo=input.indexOf("to");
+                String Description = input.substring(0, input.indexOf('/') - 1).trim();
+                String startTime = input.substring( indexOfFrom + 5, indexOfTo - 1).trim();
+                String endTime = input.substring( indexOfTo + 3).trim();
+                tasks[count] = new Event(Description, startTime, endTime);
+            }
+            System.out.println("  " + tasks[count].toString());
+            count++;
+            System.out.println("Now you have " + count + " tasks in your list.");
             System.out.println(HLINE);
         } else {
             System.out.println("Task list is full! (100 tasks max)");
@@ -46,6 +62,7 @@ public class Walkytalky {
         for (int i = 0; i < count; i++) {
             System.out.println((i + 1) + ". " + tasks[i].toString());
         }
+        System.out.println("Now you have " + count + " tasks in your list.");
         System.out.println(HLINE);
     }
 
@@ -82,7 +99,7 @@ public class Walkytalky {
             } else if (input.contains("mark")){
                 markTask(Integer.parseInt(input.substring(input.indexOf(" ")+1).trim()));
             } else {
-                addTask(input);
+                addTask(input,input);
             }
         }
     }
