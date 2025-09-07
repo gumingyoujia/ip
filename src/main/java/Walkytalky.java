@@ -23,7 +23,7 @@ public class Walkytalky {
         System.out.print(HLINE);
     }
     //helper function
-    private static void require(boolean cond, String message) throws TaskFormatException {
+    private static void ensureTaskFormat(boolean cond, String message) throws TaskFormatException {
         if (!cond) throw new TaskFormatException(message+ '\n'+HLINE);
     }
 
@@ -33,11 +33,26 @@ public class Walkytalky {
         }
     }
 
+    private static int ensureIndex(String input) throws TaskIndexException {
+        String[] parts = input.split("\\s+", 2);
+        if (parts.length < 2 || parts[1].isBlank()) {
+            throw new TaskIndexException("Please provide a task number.");
+        }
+        try {
+            int index = Integer.parseInt(parts[1].trim());
+            if (index < 1 || index > count) {
+                throw new TaskIndexException("Invalid task number: " + index);
+            }
+            return index;
+        } catch (NumberFormatException e) {
+            throw new TaskIndexException("Task number must be an integer.");
+        }
+    }
     public static void addTask(String input, Command command) throws TaskFormatException, TaskCapacityException{
         ensureCapacity();
         System.out.print(HLINE);
         String description = input.substring(command.getLength()).trim();
-        require(!description.isEmpty(), "The description of the task cannot be empty!");
+        ensureTaskFormat(!description.isEmpty(), "The description of the task cannot be empty!");
         switch (command){
         case TODO:
             tasks[count] = new Todo(description);
@@ -76,21 +91,15 @@ public class Walkytalky {
         return index >= 1 && index <= count;
     }
 
-    public static void markTask(int index) {
-        if (!isValidIndex(index)) {
-            System.out.println("Invalid task number.");
-            return;
-        }
+    public static void markTask(String input) throws TaskIndexException{
+        int index = ensureIndex(input);
         tasks[index - 1].mark();
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(tasks[index - 1].toString());
     }
 
-    public static void unmarkTask(int index) {
-        if (!isValidIndex(index)) {
-            System.out.println("Invalid task number.");
-            return;
-        }
+    public static void unmarkTask(String input) throws TaskIndexException{
+        int index = ensureIndex(input);
         tasks[index - 1].unmark();
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println(tasks[index - 1].toString());
@@ -112,10 +121,10 @@ public class Walkytalky {
                     System.out.println(HLINE + "Bye. Hope to see you again soon!\n" + HLINE);
                     return;
                 case UNMARK:
-                    unmarkTask(Integer.parseInt(input.split(" ")[1].trim()));
+                    unmarkTask(input);
                     break;
                 case MARK:
-                    markTask(Integer.parseInt(input.split(" ")[1].trim()));
+                    markTask(input);
                     break;
                 case TODO:
                 case DEADLINE:
@@ -130,6 +139,8 @@ public class Walkytalky {
             } catch (TaskFormatException e) {
                 System.out.println(e.getMessage());
             } catch (TaskCapacityException e) {
+                System.out.println(e.getMessage());
+            } catch (TaskIndexException e){
                 System.out.println(e.getMessage());
             }
         }
