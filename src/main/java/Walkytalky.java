@@ -4,13 +4,6 @@ public class Walkytalky {
 
     private static final int MAX_TASKS = 100;
     private static final String HLINE = "—".repeat(60);
-    private static final String COMMAND_BYE = "bye";
-    private static final String COMMAND_LIST = "list";
-    private static final String COMMAND_TODO = "todo";
-    private static final String COMMAND_DEADLINE = "deadline";
-    private static final String COMMAND_EVENT = "event";
-    private static final String COMMAND_MARK = "mark";
-    private static final String COMMAND_UNMARK = "unmark";
     private static final String LOGO =
             "▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖\n" +
             "▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘ \n" +
@@ -31,26 +24,29 @@ public class Walkytalky {
         System.out.println(HLINE);
     }
 
-    public static void addTask(String input){
+    public static void addTask(String input, Command command){
         if (count < tasks.length) {
             System.out.println(HLINE);
-            if (input.startsWith(COMMAND_TODO)){
-                String description= input.substring(COMMAND_TODO.length()).trim();
+            switch (command){
+            case TODO:
+                String description= input.substring(4).trim();
                 tasks[count] = new Todo(description);
-            } else if (input.startsWith(COMMAND_DEADLINE)){
+                break;
+            case DEADLINE:
                 String deadline = input.substring(input.indexOf("/by") + 3).trim();
-                String description = input.substring(0,input.indexOf('/') - 1).trim();
+                description = input.substring(0,input.indexOf('/') - 1).trim();
                 tasks[count] = new Deadline(description, deadline);
-            } else if (input.startsWith(COMMAND_EVENT)){
+                break;
+            case EVENT:
                 int indexOfFrom=input.indexOf("from");
                 int indexOfTo=input.indexOf("to");
-                String description = input.substring(0, input.indexOf('/') - 1).trim();
+                description = input.substring(0, input.indexOf('/') - 1).trim();
                 String startTime = input.substring( indexOfFrom + 5, indexOfTo - 1).trim();
                 String endTime = input.substring( indexOfTo + 3).trim();
                 tasks[count] = new Event(description, startTime, endTime);
-            } else {
-            System.out.println("Unknown task type. Please use todo, deadline, or event.");
-            return;
+                break;
+            default:
+                System.out.println("Unknown task type. Please use todo, deadline, or event.");
             }
             System.out.println("  " + tasks[count].toString());
             count++;
@@ -97,17 +93,37 @@ public class Walkytalky {
     public static void run(Scanner in){
         while (true){
             String input = in.nextLine().trim();
-            if (input.equalsIgnoreCase(COMMAND_LIST)){
-                listTasks();
-            } else if (input.equalsIgnoreCase(COMMAND_BYE)){
-                System.out.println(HLINE+"\nBye. Hope to see you again soon!\n"+HLINE);
-                return;
-            } else if (input.startsWith(COMMAND_UNMARK)){
-                unmarkTask(Integer.parseInt(input.split(" ")[1].trim()));
-            } else if (input.startsWith(COMMAND_MARK)){
-                markTask(Integer.parseInt(input.split(" ")[1].trim()));
-            } else {
-                addTask(input);
+            try {
+                Command command = Command.fromInput(input.toLowerCase());
+                if (command == null) {
+                    throw new CommandException("Sorry but I don't know what " + input + "means. Pls start with todo/deadline/event/list/mark/unmark/bye.");
+                }
+                switch (command) {
+                case LIST:
+                    listTasks();
+                    break;
+                case BYE:
+                    System.out.println(HLINE + "\nBye. Hope to see you again soon!\n" + HLINE);
+                    return;
+                case UNMARK:
+                    unmarkTask(Integer.parseInt(input.split(" ")[1].trim()));
+                    break;
+                case MARK:
+                    markTask(Integer.parseInt(input.split(" ")[1].trim()));
+                    break;
+                case TODO:
+                case DEADLINE:
+                case EVENT:
+                    addTask(input, command); // pass command into addTask
+                    break;
+                default:
+                    throw new CommandException("Sorry but I don't know what " + input + "means. Pls start with todo/deadline/event/list/mark/unmark/bye.");
+                }
+            } catch (CommandException e) {
+                System.out.println(HLINE);
+                System.out.println(e.getMessage());
+                System.out.println(HLINE);
+                run(in);
             }
         }
     }
