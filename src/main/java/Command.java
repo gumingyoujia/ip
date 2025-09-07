@@ -25,4 +25,8 @@ public enum Command {
         }
         return null; // unknown command
     }
+
+    public int getLength(){
+        return keyword.length();
+    }
 }
