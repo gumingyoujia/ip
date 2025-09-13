@@ -92,6 +92,15 @@ public class Walkytalky {
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println(tasks.get(index - 1).toString());
     }
+    public static void deleteTask(String input) throws TaskIndexException {
+        int index = ensureIndex(input);
+        Task removed = tasks.remove(index - 1);
+        System.out.print(HLINE);
+        System.out.println(" Noted. I've removed this task:");
+        System.out.println("   " + removed);
+        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+        System.out.print(HLINE);
+    }
 
     public static void run(Scanner in){
         while (true){
@@ -113,6 +122,9 @@ public class Walkytalky {
                     break;
                 case MARK:
                     markTask(input);
+                    break;
+                case DELETE:
+                    deleteTask(input);
                     break;
                 case TODO:
                 case DEADLINE:
