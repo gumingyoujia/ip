@@ -5,7 +5,6 @@ class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
-        System.out.println("Got it. I've added this task:");
     }
 
     public void mark() {
@@ -14,6 +13,12 @@ class Task {
 
     public void unmark() {
         isDone = false;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public boolean isDone() {
+        return isDone;
     }
 
     public String toString() {

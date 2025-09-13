@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Walkytalky {
-
+    private static final String FILE_PATH = "./data/tasks.txt";
     private static final String HLINE = "—".repeat(60)+'\n';
     private static final String LOGO =
             "▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖\n" +
@@ -12,6 +12,7 @@ public class Walkytalky {
             "                                                   ";
 
     private static ArrayList<Task> tasks = new ArrayList<>();
+    private static final Storage storage = new Storage(FILE_PATH);
 
     public static void printWelcomeMessage() {
         System.out.print(HLINE);
@@ -55,6 +56,7 @@ public class Walkytalky {
             tasks.add( new Deadline(description, deadline));
             break;
         case EVENT:
+            description = input.substring(command.getLength(), input.indexOf('/') - 1).trim();
             int indexOfFrom=input.indexOf("from");
             int indexOfTo=input.indexOf("to");
             String startTime = input.substring( indexOfFrom + 5, indexOfTo - 1).trim();
@@ -65,6 +67,7 @@ public class Walkytalky {
             System.out.println("Unknown task type. Please use todo, deadline, or event.");
         }
         Task taskAdded = tasks.get(tasks.size() - 1);
+        System.out.println("Got it. I've added this task:");
         System.out.println("  " + taskAdded.toString());
         System.out.println("Now you have " + tasks.size() + " tasks in your list.");
         System.out.println(HLINE);
@@ -122,6 +125,7 @@ public class Walkytalky {
                 default:
                     throw new CommandException("Sorry but I don't know what " + input + " means. Pls start with todo/deadline/event/list/mark/unmark/bye.");
                 }
+                storage.save(tasks);
             } catch (CommandException e) {
                 System.out.print(HLINE + e.getMessage()+'\n' + HLINE);
             } catch (TaskFormatException e) {
@@ -134,6 +138,7 @@ public class Walkytalky {
 
     public static void main(String[] args) {
         printWelcomeMessage();
+        tasks.addAll(storage.load());
         Scanner in = new Scanner(System.in);
         run(in);
     }
