@@ -1,8 +1,8 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Walkytalky {
 
-    private static final int MAX_TASKS = 100;
     private static final String HLINE = "—".repeat(60)+'\n';
     private static final String LOGO =
             "▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖\n" +
@@ -11,8 +11,7 @@ public class Walkytalky {
             "▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌  \n" +
             "                                                   ";
 
-    private static Task[] tasks = new Task[MAX_TASKS];
-    private static int count = 0;
+    private static ArrayList<Task> tasks = new ArrayList<>();
 
     public static void printWelcomeMessage() {
         System.out.print(HLINE);
@@ -27,12 +26,6 @@ public class Walkytalky {
         if (!cond) throw new TaskFormatException(message+ '\n'+HLINE);
     }
 
-    private static void ensureCapacity() throws TaskCapacityException {
-        if (count >= MAX_TASKS) {
-            throw new TaskCapacityException(HLINE+ "Task list is full! (100 tasks max)"+ HLINE);
-        }
-    }
-
     private static int ensureIndex(String input) throws TaskIndexException {
         String[] parts = input.split("\\s+", 2);
         if (parts.length < 2 || parts[1].isBlank()) {
@@ -40,7 +33,7 @@ public class Walkytalky {
         }
         try {
             int index = Integer.parseInt(parts[1].trim());
-            if (index < 1 || index > count) {
+            if (index < 1 || index > tasks.size()) {
                 throw new TaskIndexException("Invalid task number: " + index);
             }
             return index;
@@ -48,61 +41,56 @@ public class Walkytalky {
             throw new TaskIndexException("Task number must be an integer.");
         }
     }
-    public static void addTask(String input, Command command) throws TaskFormatException, TaskCapacityException{
-        ensureCapacity();
+    public static void addTask(String input, Command command) throws TaskFormatException{
         System.out.print(HLINE);
         String description = input.substring(command.getLength()).trim();
         ensureTaskFormat(!description.isEmpty(), "The description of the task cannot be empty!");
         switch (command){
         case TODO:
-            tasks[count] = new Todo(description);
+            tasks.add(new Todo(description));
             break;
         case DEADLINE:
             description = input.substring(command.getLength(), input.indexOf('/') - 1).trim();
             String deadline = input.substring(input.indexOf("/by") + 3).trim();
-            tasks[count] = new Deadline(description, deadline);
+            tasks.add( new Deadline(description, deadline));
             break;
         case EVENT:
             int indexOfFrom=input.indexOf("from");
             int indexOfTo=input.indexOf("to");
             String startTime = input.substring( indexOfFrom + 5, indexOfTo - 1).trim();
             String endTime = input.substring( indexOfTo + 3).trim();
-            tasks[count] = new Event(description, startTime, endTime);
+            tasks.add(new Event(description, startTime, endTime));
             break;
         default:
             System.out.println("Unknown task type. Please use todo, deadline, or event.");
         }
-        System.out.println("  " + tasks[count].toString());
-        count++;
-        System.out.println("Now you have " + count + " tasks in your list.");
+        Task taskAdded = tasks.get(tasks.size() - 1);
+        System.out.println("  " + taskAdded.toString());
+        System.out.println("Now you have " + tasks.size() + " tasks in your list.");
         System.out.println(HLINE);
     }
 
     public static void listTasks() {
         System.out.println(HLINE+"Here are the tasks in your list:");
-        for (int i = 0; i < count; i++) {
-            System.out.println((i + 1) + ". " + tasks[i].toString());
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i).toString());
         }
-        System.out.println("Now you have " + count + " tasks in your list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in your list.");
         System.out.print(HLINE);
-    }
-
-    private static boolean isValidIndex(int index) {
-        return index >= 1 && index <= count;
     }
 
     public static void markTask(String input) throws TaskIndexException{
         int index = ensureIndex(input);
-        tasks[index - 1].mark();
+        tasks.get(index - 1).mark();
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println(tasks[index - 1].toString());
+        System.out.println(tasks.get(index - 1).toString());
     }
 
     public static void unmarkTask(String input) throws TaskIndexException{
         int index = ensureIndex(input);
-        tasks[index - 1].unmark();
+        tasks.get(index - 1).unmark();
         System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(tasks[index - 1].toString());
+        System.out.println(tasks.get(index - 1).toString());
     }
 
     public static void run(Scanner in){
@@ -137,8 +125,6 @@ public class Walkytalky {
             } catch (CommandException e) {
                 System.out.print(HLINE + e.getMessage()+'\n' + HLINE);
             } catch (TaskFormatException e) {
-                System.out.println(e.getMessage());
-            } catch (TaskCapacityException e) {
                 System.out.println(e.getMessage());
             } catch (TaskIndexException e){
                 System.out.println(e.getMessage());
