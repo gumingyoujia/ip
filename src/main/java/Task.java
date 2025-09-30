@@ -1,6 +1,5 @@
 /**
  * Represents a task with a description and completion status.
- * Base class for specific task types like Todo, Deadline, and Event.
  */
 class Task {
     private String description;

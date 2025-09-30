@@ -5,7 +5,6 @@
 public class Walkytalky {
     private static final String FILE_PATH = "./data/tasks.txt";
     private final Storage storage;
-    private final Parser parser;
     private final TaskList tasks;
     private final Ui ui;
 
@@ -14,7 +13,6 @@ public class Walkytalky {
      */
     public Walkytalky() {
         ui = new Ui();
-        parser = new Parser();
         storage = new Storage(FILE_PATH);
         tasks = new TaskList(storage.load());
     }
