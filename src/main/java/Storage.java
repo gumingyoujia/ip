@@ -8,10 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 
+/**
+ * Handles loading tasks from disk and saving tasks to disk.
+ * Tasks are stored in a plain text format and reconstructed at runtime.
+ */
 public class Storage {
     private final File file;
     private final String HLINE = "—".repeat(60)+'\n';
 
+    /**
+     * Constructs a Storage object for the given file path.
+     *
+     * @param filePath Path to the task file.
+     */
     public Storage(String filePath) {
         file = new File(filePath);
     }
@@ -33,6 +42,11 @@ public class Storage {
         return list;
     }
 
+    /**
+     * Loads tasks from disk. If no file exists, an empty list is returned.
+     *
+     * @return List of loaded tasks.
+     */
     public List<Task> load() {
         List<Task> list = new ArrayList<>();
         try {
@@ -44,6 +58,11 @@ public class Storage {
         return list;
     }
 
+    /**
+     * Saves all tasks to disk, overwriting the file.
+     *
+     * @param tasks List of tasks to save.
+     */
     public void save(List<Task> tasks) {
         ensureParents();
         try (FileWriter fw = new FileWriter(file)) {

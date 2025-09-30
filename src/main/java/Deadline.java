@@ -1,3 +1,6 @@
+/**
+ * Represents a Deadline task with a due date/time.
+ */
 public class Deadline extends Task {
     String by;
 

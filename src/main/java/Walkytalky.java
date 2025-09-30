@@ -1,3 +1,7 @@
+/**
+ * The main entry point for the Walkytalky application.
+ * Handles user interaction, command parsing, and task management.
+ */
 public class Walkytalky {
     private static final String FILE_PATH = "./data/tasks.txt";
     private final Storage storage;
@@ -5,7 +9,9 @@ public class Walkytalky {
     private final TaskList tasks;
     private final Ui ui;
 
-
+    /**
+     * Constructs a Walkytalky instance, initializing storage, parser, UI, and task list.
+     */
     public Walkytalky() {
         ui = new Ui();
         parser = new Parser();
@@ -13,8 +19,11 @@ public class Walkytalky {
         tasks = new TaskList(storage.load());
     }
 
-
-
+    /**
+     * Runs the main application loop.
+     * Continuously reads user input, parses commands, and executes them.
+     * Saves the task list after each valid operation.
+     */
     public void run() {
         ui.printWelcomeMessage();
         while (true) {
@@ -61,7 +70,11 @@ public class Walkytalky {
         }
     }
 
-
+    /**
+     * Application entry point.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new Walkytalky().run();
     }
