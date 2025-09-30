@@ -35,4 +35,28 @@ public class Parser {
             throw new TaskFormatException("Unknown task type. Please use todo, deadline, or event.");
         }
     }
+
+    public static int getIndex(String input, int tasksSize) throws TaskIndexException {
+        String[] parts = input.split("\\s+", 2);
+        if (parts.length < 2 || parts[1].isBlank()) {
+            throw new TaskIndexException("Please provide a task number.");
+        }
+        try {
+            int index = Integer.parseInt(parts[1].trim());
+            if (index < 1 || index > tasksSize) {
+                throw new TaskIndexException("Invalid task number: " + index);
+            }
+            return index;
+        } catch (NumberFormatException e) {
+            throw new TaskIndexException("Task number must be an integer.");
+        }
+    }
+    public static String getKeyword(String input) throws TaskFormatException {
+        String[] parts = input.split("\\s+", 2);
+        if (parts.length < 2 || parts[1].isBlank()) {
+            throw new TaskFormatException("Please provide a keyword.");
+        }
+        return parts[1].trim();
+    }
+
 }

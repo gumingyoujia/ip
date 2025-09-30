@@ -6,6 +6,7 @@ public enum Command {
     UNMARK("unmark"),
     LIST("list"),
     DELETE("delete"),
+    FIND ("find"),
     BYE("bye");
 
     private final String keyword;
