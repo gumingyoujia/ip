@@ -1,26 +1,118 @@
-# Walkytalky project template
+# Walkytalky User Guide
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+Welcome to **Walkytalky**, your personal chatbot that helps you manage tasks efficiently!
 
-## Setting up in Intellij
+---
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Features
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Walkytalky.java` file, right-click it, and choose `Run Walkytalky.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+### 1. Add Tasks
+Walkytalky supports three types of tasks:
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+- **Todo** `todo`– A simple task without a date/time.  
+  **Command format:**
+  ```
+  todo <description>
+  ```
+  Example:
+  ```
+  todo Buy groceries
+  ```
+
+- **Deadline** `deadline`– A task with a due date/time.  
+  **Command format:**
+  ```
+  deadline <description> /by <due date/time>
+  ```
+  Example:
+  ```
+  deadline Submit assignment /by 2025-10-05
+  ```
+
+- **Event** `event`– A task with a start and end time.  
+  **Command format:**
+  ```
+  event <description> /from <start time> /to <end time>
+  ```
+  Example:
+  ```
+  event Team meeting /from 10:00 /to 12:00
+  ```
+
+---
+
+### 2. List Tasks `list`
+Display all tasks in your task list:
+
+```
+list
+```
+
+- Walkytalky shows all tasks with their index numbers and status.
+
+---
+
+### 3. Mark & Unmark Tasks 
+- **Mark a task as done: `mark`**
+  ```
+  mark <task number>
+  ```
+- **Unmark a task as not done:`unmark`**
+  ```
+  unmark <task number>
+  ```
+
+Example:
+```
+mark 2
+```
+Marks the second task as completed.
+
+---
+
+### 4. Delete Tasks `delete`
+Remove a task from your list:
+
+```
+delete <task number>
+```
+
+Example:
+```
+delete 3
+```
+Deletes the third task in the list.
+
+---
+
+### 5. Find Tasks `find`
+Search for tasks containing a keyword:
+
+```
+find <keyword>
+```
+
+Example:
+```
+find meeting
+```
+Displays all tasks containing "meeting" in the description.
+
+---
+
+### 6. Exit Walkytalky `bye`
+Close the chatbot gracefully:
+
+```
+bye
+```
+
+Walkytalky will show a goodbye message and save all tasks automatically.
+
+---
+
+## Tips
+
+- Commands are **case-insensitive**, e.g., `TODO` and `todo` are treated the same.
+- Always use the correct command format to avoid errors.
+- Walkytalky automatically saves all your tasks, so you don’t have to worry about losing data.
