@@ -35,6 +35,22 @@ public class TaskList {
         return tasks;
     }
 
+    public void searchTask(String searchText) {
+        List<Task> result = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(searchText)) {
+                result.add(task);
+            }
+        }
+        if (result.isEmpty()) {
+            System.out.println("Sorry, I can't find such task.");
+            return;
+        }
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println((i + 1) + ". " + result.get(i));
+        }
+    }
+
     public int size() {
         return tasks.size();
     }

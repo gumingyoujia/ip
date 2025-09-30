@@ -13,21 +13,7 @@ public class Walkytalky {
         tasks = new TaskList(storage.load());
     }
 
-    private int ensureIndex(String input) throws TaskIndexException {
-        String[] parts = input.split("\\s+", 2);
-        if (parts.length < 2 || parts[1].isBlank()) {
-            throw new TaskIndexException("Please provide a task number.");
-        }
-        try {
-            int index = Integer.parseInt(parts[1].trim());
-            if (index < 1 || index > tasks.size()) {
-                throw new TaskIndexException("Invalid task number: " + index);
-            }
-            return index;
-        } catch (NumberFormatException e) {
-            throw new TaskIndexException("Task number must be an integer.");
-        }
-    }
+
 
     public void run() {
         ui.printWelcomeMessage();
@@ -40,23 +26,26 @@ public class Walkytalky {
                 case LIST:
                     tasks.listTasks();
                     break;
+                case FIND:
+                    String keyword= Parser.getKeyword(input);
+                    tasks.searchTask(keyword);
+                    break;
                 case BYE:
-                    ui.showExit();
+                    ui.showExitMessage();
                     return;
                 case UNMARK:
-                    int index = ensureIndex(input);
+                    int index = Parser.getIndex(input,tasks.size());
                     tasks.getTask(index - 1).unmark();
                     ui.showUnmarkMessage(tasks.getTask(index - 1));
                     break;
                 case MARK:
-                    index = ensureIndex(input);
+                    index = Parser.getIndex(input,tasks.size());
                     tasks.getTask(index - 1).mark();
                     ui.showMarkMessage(tasks.getTask(index - 1));
                     break;
                 case DELETE:
-                    Task removed = tasks.deleteTask(ensureIndex(input) - 1);
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("   " + removed);
+                    Task removed = tasks.deleteTask(Parser.getIndex(input,tasks.size()) - 1);
+                    ui.showDeleteMessage(removed);
                     break;
                 case TODO:
                 case DEADLINE:
@@ -67,7 +56,7 @@ public class Walkytalky {
                 ui.showLine();
                 storage.save(tasks.getAll());
             } catch (CommandException | TaskFormatException | TaskIndexException e) {
-                ui.showError(e.getMessage());
+                ui.showErrorMessage(e.getMessage());
             }
         }
     }

@@ -28,7 +28,7 @@ public class Ui {
         System.out.print(HLINE);
     }
 
-    public void showError(String message) {
+    public void showErrorMessage(String message) {
         System.out.println(message);
         showLine();
     }
@@ -37,16 +37,23 @@ public class Ui {
         return in.nextLine().trim();
     }
 
-    public void showExit() {
+    public void showExitMessage() {
         System.out.println("Bye. Hope to see you again soon!\n");
     }
+
 
     public void showMarkMessage(Task task) {
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(task.toString());
     }
+
     public void showUnmarkMessage(Task task) {
         System.out.println("Nice! I've unmarked this task:");
         System.out.println(task.toString());
+    }
+
+    public void showDeleteMessage(Task task) {
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("   " + task);
     }
 }
