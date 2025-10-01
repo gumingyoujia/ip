@@ -24,47 +24,17 @@ public class Walkytalky {
      */
     public void run() {
         ui.printWelcomeMessage();
-        while (true) {
+        boolean exit = false;
+        while (!exit) {
             String input = ui.readCommand();
             ui.showLine();
             try {
                 Command command = Parser.parseCommand(input);
-                switch (command) {
-                case LIST:
-                    tasks.listTasks();
-                    break;
-                case FIND:
-                    String keyword= Parser.getKeyword(input);
-                    tasks.searchTask(keyword);
-                    break;
-                case BYE:
-                    ui.showExitMessage();
-                    return;
-                case UNMARK:
-                    int index = Parser.getIndex(input,tasks.size());
-                    tasks.getTask(index - 1).unmark();
-                    ui.showUnmarkMessage(tasks.getTask(index - 1));
-                    break;
-                case MARK:
-                    index = Parser.getIndex(input,tasks.size());
-                    tasks.getTask(index - 1).mark();
-                    ui.showMarkMessage(tasks.getTask(index - 1));
-                    break;
-                case DELETE:
-                    Task removed = tasks.deleteTask(Parser.getIndex(input,tasks.size()) - 1);
-                    ui.showDeleteMessage(removed);
-                    break;
-                case TODO:
-                case DEADLINE:
-                case EVENT:
-                    Task newTask = Parser.parseTask(input, command);
-                    tasks.addTask(newTask);
-                }
-                ui.showLine();
-                storage.save(tasks.getAll());
-            } catch (CommandException | TaskFormatException | TaskIndexException e) {
+                exit=command.execute(input, tasks, ui, storage);
+            } catch (Exception e) {
                 ui.showErrorMessage(e.getMessage());
             }
+            ui.showLine();
         }
     }
 

@@ -7,12 +7,12 @@ import java.util.Scanner;
  */
 public class Ui {
     private static final String HLINE = "—".repeat(60) + '\n';
-    private static final String LOGO =
-            "▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖\n" +
-            "▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘ \n" +
-            "▐▌ ▐▌▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌    █ ▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌  \n" +
-            "▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌  \n" +
-            "                                                   ";
+    private static final String LOGO = """
+        ▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖
+        ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘ 
+        ▐▌ ▐▌▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌    █ ▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌  
+        ▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌                 
+        """;
 
     private final Scanner in;
 
@@ -49,7 +49,6 @@ public class Ui {
      */
     public void showErrorMessage(String message) {
         System.out.println(message);
-        showLine();
     }
 
     /**
@@ -65,7 +64,7 @@ public class Ui {
      * Prints the exit message when the user chooses to quit.
      */
     public void showExitMessage() {
-        System.out.println("Bye. Hope to see you again soon!\n");
+        System.out.println("Bye. Hope to see you again soon!");
     }
 
     /**

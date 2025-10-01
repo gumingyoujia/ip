@@ -1,8 +1,8 @@
 /**
  * Represents a task with a description and completion status.
  */
-class Task {
-    private String description;
+public class Task {
+    private final String description;
     private boolean isDone;
 
     /**

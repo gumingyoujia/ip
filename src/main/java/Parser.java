@@ -33,22 +33,54 @@ public class Parser {
         case TODO:
             String description = input.substring(command.getLength()).trim();
             if (description.isEmpty()) {
-                throw new TaskFormatException("The description of a todo cannot be empty!");
+                throw new TaskFormatException("The description cannot be empty!");
             }
             return new Todo(description);
 
         case DEADLINE:
-            String descD = input.substring(command.getLength(), input.indexOf('/') - 1).trim();
-            String deadline = input.substring(input.indexOf("/by") + 3).trim();
+            int byIndex = input.indexOf("/by");
+            if (byIndex == -1) {
+                throw new TaskFormatException("Deadline must include '/by' followed by a date/time.");
+            }
+
+            String descD = input.substring(command.getLength(), byIndex).trim();
+            if (descD.isEmpty()) {
+                throw new TaskFormatException("The description of a deadline cannot be empty!");
+            }
+
+            String deadline = input.substring(byIndex + 3).trim();
+            if (deadline.isEmpty()) {
+                throw new TaskFormatException("The deadline date/time cannot be empty!");
+            }
+
             return new Deadline(descD, deadline);
 
         case EVENT:
-            String descE = input.substring(command.getLength(), input.indexOf('/') - 1).trim();
-            int indexOfFrom = input.indexOf("from");
-            int indexOfTo = input.indexOf("to");
-            String startTime = input.substring(indexOfFrom + 5, indexOfTo - 1).trim();
-            String endTime = input.substring(indexOfTo + 3).trim();
+            int indexOfFrom = input.indexOf("/from");
+            int indexOfTo = input.indexOf("/to");
+
+            if (indexOfFrom == -1 || indexOfTo == -1 || indexOfFrom > indexOfTo) {
+                throw new TaskFormatException(
+                        "Event must be in format: event <description> /from <start> /to <end>"
+                );
+            }
+
+            // Extract description
+            String descE = input.substring(command.getLength(), indexOfFrom).trim();
+            if (descE.isEmpty()) {
+                throw new TaskFormatException("The description of an event cannot be empty!");
+            }
+
+            // Extract start and end times
+            String startTime = input.substring(indexOfFrom + 4, indexOfTo).trim(); // +4 to skip "from"
+            String endTime = input.substring(indexOfTo + 2).trim();                // +2 to skip "to"
+
+            if (startTime.isEmpty() || endTime.isEmpty()) {
+                throw new TaskFormatException("Start time and end time must be provided for an event.");
+            }
+
             return new Event(descE, startTime, endTime);
+
 
         default:
             throw new TaskFormatException("Unknown task type. Please use todo, deadline, or event.");
