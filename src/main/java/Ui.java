@@ -6,12 +6,16 @@ import java.util.Scanner;
  * and show feedback for task operations.
  */
 public class Ui {
-    private static final String HLINE = "—".repeat(60) + '\n';
+    private static final String HLINE = "_".repeat(60) + '\n';
     private static final String LOGO = """
-        ▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖
-        ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘
-        ▐▌ ▐▌▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌    █ ▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌
-        ▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌
+                           _ _          _        _ _         \s
+                          | | |        | |      | | |        \s
+            __      ____ _| | | ___   _| |_ __ _| | | ___   _\s
+            \\ \\ /\\ / / _` | | |/ / | | | __/ _` | | |/ / | | |
+             \\ V  V / (_| | |   <| |_| | || (_| | |   <| |_| |
+              \\_/\\_/ \\__,_|_|_|\\_\\\\__, |\\__\\__,_|_|_|\\_\\\\__, |
+                                   __/ |                 __/ |
+                                  |___/                 |___/\s
         """;
 
     private final Scanner in;
@@ -28,10 +32,10 @@ public class Ui {
      */
     public void printWelcomeMessage() {
         System.out.print(HLINE);
-        System.out.println("Hi!!! I am your\n" + LOGO);
-        System.out.println("You can ask me anything and I will always be here:)");
+        System.out.println("Hi!!! I am \n" + LOGO);
+        System.out.println("your personal chatbot that helps you manage tasks efficiently!");
         System.out.print(HLINE);
-        System.out.println("What can I do for you today?");
+        System.out.println("What do you want to add to your task list today?");
         System.out.print(HLINE);
     }
 

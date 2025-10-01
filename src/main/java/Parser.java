@@ -15,7 +15,7 @@ public class Parser {
         Command command = Command.fromInput(input.toLowerCase());
         if (command == null) {
             throw new CommandException("Sorry but I don't know what " + input +
-                    " means. Pls start with todo/deadline/event/list/mark/unmark/bye.");
+                    " means.\nPls start with todo/deadline/event/list/mark/unmark/find/bye.");
         }
         return command;
     }
