@@ -9,9 +9,9 @@ public class Ui {
     private static final String HLINE = "—".repeat(60) + '\n';
     private static final String LOGO = """
         ▗▖ ▗▖ ▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖▗▄▄▄▖▗▄▖ ▗▖   ▗▖ ▗▖▗▖  ▗▖
-        ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘ 
-        ▐▌ ▐▌▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌    █ ▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌  
-        ▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌                 
+        ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘   █ ▐▌ ▐▌▐▌   ▐▌▗▞▘ ▝▚▞▘
+        ▐▌ ▐▌▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌    █ ▐▛▀▜▌▐▌   ▐▛▚▖   ▐▌
+        ▐▙█▟▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌    █ ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌  ▐▌
         """;
 
     private final Scanner in;
@@ -28,10 +28,10 @@ public class Ui {
      */
     public void printWelcomeMessage() {
         System.out.print(HLINE);
-        System.out.println(" Hi!!! I am your\n" + LOGO);
-        System.out.println(" You can ask me anything and I will always be here:)");
+        System.out.println("Hi!!! I am your\n" + LOGO);
+        System.out.println("You can ask me anything and I will always be here:)");
         System.out.print(HLINE);
-        System.out.println(" What can I do for you today?");
+        System.out.println("What can I do for you today?");
         System.out.print(HLINE);
     }
 

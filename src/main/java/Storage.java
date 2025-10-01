@@ -14,7 +14,6 @@ import java.util.Scanner;
  */
 public class Storage {
     private final File file;
-    private final String HLINE = "—".repeat(60)+'\n';
 
     /**
      * Constructs a Storage object for the given file path.
@@ -52,7 +51,6 @@ public class Storage {
         try {
             list=loadFileContents();
         } catch (FileNotFoundException e) {
-            System.out.println(" There is no existing task list.\n" + HLINE);
             return list;
         }
         return list;
